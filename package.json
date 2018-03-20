@@ -3,9 +3,6 @@
   "version": "0.0.1",
   "description": "Hangman Game for Key Stage 1 & 2",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MontyGoose/ks-hangman.git"
@@ -23,8 +20,21 @@
   ],
   "author": "Andy Parry",
   "license": "ISC",
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "npm run build-ts && npm run tslint",
+    "serve": "node dist/server.js",
+    "test": "jest --forceExit --coverage --verbose",
+    "build-ts": "tsc",
+    "watch-ts": "tsc -w",
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "debug": "npm run build && npm run watch-debug",
+    "serve-debug": "nodemon --inspect dist/server.js"
+  },
   "bugs": {
     "url": "https://github.com/MontyGoose/ks-hangman/issues"
   },
-  "homepage": "https://github.com/MontyGoose/ks-hangman#readme"
+  "homepage": "https://github.com/MontyGoose/ks-hangman#readme",
+  "dependencies": {},
+  "devDependencies": {}
 }
