@@ -15,27 +15,33 @@ const ks1_1 = __importDefault(require("./words/ks1"));
 const a = "abcdefghijklmnopqrstuvwxyz";
 class Hangman {
     constructor() {
-        this.status = { lives: 0 };
+        this.status = {};
         this.letters = [];
         this.word = {};
         this.reset();
     }
     reset() {
-        this.status.lives = 9;
+        this.status = { "err": undefined, "lives": 9 };
         this.buildAlphabet();
-        this.word.raw_word = this.drawWord();
-        this.word.guess_word = this.guess("e");
-        this.word.guess_word = this.guess("o");
+        this.word = this.initWord();
     }
     guess(letter) {
-        this.setGuess(letter);
-        let guess_word = this.word.raw_word;
-        _.each(this.getGuesses(), function (item) {
-            guess_word = guess_word.replace(new RegExp(item.letter + "|.", "gi"), c => {
-                return c === item.letter ? c.toUpperCase() : c;
+        try {
+            this.check(letter);
+            this.setGuess(letter);
+            let guess_word = this.word.raw_word;
+            _.each(this.getGuesses(), function (item) {
+                guess_word = guess_word.replace(new RegExp(item.letter + "|.", "gi"), c => {
+                    return c === item.letter ? c.toUpperCase() : c;
+                });
             });
-        });
-        return guess_word.replace(/[a-z-]/g, "-").toLowerCase(); // replace lowercase with dashes - and then lowercase result
+            // updates
+            this.word.guess_word = this.obfusicate(guess_word);
+            this.status.lives--;
+        }
+        catch (err) {
+            throw err;
+        }
     }
     getStatus() {
         return this.status;
@@ -46,45 +52,42 @@ class Hangman {
     getLetters() {
         return this.letters;
     }
+    check(letter) {
+        // only allow guess if we have enought lives
+        // not game over
+        // character is in alphabet (a)
+        this.status.err = undefined;
+        if (this.status.lives == 0) {
+            this.status.err = "No lives left";
+        }
+        if (this.status.err == "Game Over") {
+            this.status.err = "Game Over";
+        }
+        if (!a.includes(letter)) {
+            this.status.err = "Guess letter " + letter + "; is not in the chosen alphabet";
+        }
+        if (this.status.err) {
+            throw new Error(this.status.err);
+        }
+    }
     setGuess(letter) {
         _.find(this.letters, { "letter": letter }).guessed = true;
     }
     getGuesses() {
         return _.filter(this.letters, { "guessed": true });
     }
-    drawWord() {
-        return ks1_1.default[Math.floor(Math.random() * ks1_1.default.length)];
+    initWord() {
+        const pickedWord = ks1_1.default[Math.floor(Math.random() * ks1_1.default.length)];
+        return { "raw_word": pickedWord, "guess_word": this.obfusicate(pickedWord) };
+    }
+    obfusicate(word) {
+        return word.replace(/[a-z-]/g, "-").toLowerCase();
     }
     buildAlphabet() {
-        // take letters and create structure
         for (const char of a) {
             this.letters.push({ "letter": char, "guessed": false, "inWord": false });
         }
     }
 }
 exports.Hangman = Hangman;
-// get random work from list - private
-//
-// return current state of word - if no word - get word
-//
-// check letter in word - return T/F
-//
-// update current state of word
-//
-// reset - remove all stats and word
-//
-// //flow
-//  - start Game
-//  - reset all stats
-//  - get word
-//  -- get visibile state
-//
-//  - get guess
-//    -- inform if guess in word
-//    -- get visible state
-//    -- if word guessed
-//      - winner
-//    -- if no guesses left
-//      - looser
-//    -- repeat
 //# sourceMappingURL=index.js.map
