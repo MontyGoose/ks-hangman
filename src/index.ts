@@ -10,26 +10,35 @@ interface IStatus {
   lives: number;
 }
 
+interface IWord {
+  guess_word: String;
+  raw_word: String;
+}
+
 const a = "abcdefghijklmnopqrstuvwxyz";
 
 
 export class Hangman {
 
-  status: IStatus = {lives: 0};
+  status: IStatus = { lives: 0 };
   letters = [] as Array<ILetter>;
+  word = {} as IWord;
 
   constructor() {
-     this.reset();
-   }
+    this.reset();
+  }
 
   reset() { // will idealy of course be driven from options
     this.status.lives = 9;
     this.buildAlphabet();
-    console.log(this.letters);
+    this.word.raw_word = this.drawWord();
+    this.word.guess_word = this.guess("");
   }
 
   guess(letter: String) {
-
+    return this.word.raw_word.replace(new RegExp(letter + "|.", "gi"), c => {
+      return c === letter ? c : "*";
+    });
   }
 
   getStatus() {
@@ -37,17 +46,21 @@ export class Hangman {
   }
 
   getWord() {
-
+    return this.word;
   }
 
   getLetters() {
+    return this.letters;
+  }
 
+  private drawWord() {
+    return ks1Words[Math.floor(Math.random() * ks1Words.length)];
   }
 
   private buildAlphabet() {
     // take letters and create structure
     for (const char of a) {
-      this.letters.push({"letter": char, "guessed": false, "inWord": false});
+      this.letters.push({ "letter": char, "guessed": false, "inWord": false });
     }
   }
 }

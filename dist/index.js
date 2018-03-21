@@ -1,25 +1,39 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+}
 Object.defineProperty(exports, "__esModule", { value: true });
+const ks1_1 = __importDefault(require("./words/ks1"));
 const a = "abcdefghijklmnopqrstuvwxyz";
 class Hangman {
     constructor() {
         this.status = { lives: 0 };
         this.letters = [];
+        this.word = {};
         this.reset();
     }
     reset() {
         this.status.lives = 9;
         this.buildAlphabet();
-        console.log(this.letters);
+        this.word.raw_word = this.drawWord();
+        this.word.guess_word = this.guess("");
     }
     guess(letter) {
+        return this.word.raw_word.replace(new RegExp(letter + "|.", "gi"), c => {
+            return c === letter ? c : "*";
+        });
     }
     getStatus() {
         return this.status;
     }
     getWord() {
+        return this.word;
     }
     getLetters() {
+        return this.letters;
+    }
+    drawWord() {
+        return ks1_1.default[Math.floor(Math.random() * ks1_1.default.length)];
     }
     buildAlphabet() {
         // take letters and create structure
