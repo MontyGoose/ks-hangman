@@ -27,21 +27,14 @@ class Hangman {
     }
     guess(letter) {
         try {
-            this.check(letter);
-            this.setGuess(letter);
-            let guess_word = this.word.raw_word;
-            _.each(this.getGuesses(), function (item) {
-                guess_word = guess_word.replace(new RegExp(item.letter + "|.", "gi"), c => {
-                    return c === item.letter ? c.toUpperCase() : c;
-                });
-            });
-            // updates
-            this.word.guess_word = this.obfusicate(guess_word);
-            this.status.lives--;
+            this.check(letter); // are we OK to proceed will throw error if not
         }
         catch (err) {
             throw err;
         }
+        this.updateLetters(letter); // update letters with guess
+        this.updateWord(letter); // update word interface with guess
+        this.updateStatus(letter);
     }
     getStatus() {
         return this.status;
@@ -70,18 +63,34 @@ class Hangman {
             throw new Error(this.status.err);
         }
     }
-    setGuess(letter) {
+    /* UPDATE FUNCTIONS */
+    updateLetters(letter) {
         _.find(this.letters, { "letter": letter }).guessed = true;
     }
-    getGuesses() {
-        return _.filter(this.letters, { "guessed": true });
+    updateStatus(letter) {
+        if (!this.word.raw_word.includes(letter)) {
+            this.status.lives--; // only loose a life if letter NOT found
+            return false;
+        }
+        return true;
     }
+    updateWord(letter) {
+        let guess_word = this.word.raw_word;
+        _.each(_.filter(this.letters, { "guessed": true }), function (item) {
+            guess_word = guess_word.replace(new RegExp(item.letter + "|.", "gi"), c => {
+                return c === item.letter ? c.toUpperCase() : c;
+            });
+        });
+        this.word.guess_word = this.obfusicate(guess_word);
+    }
+    /* HELPER FUNCTIONS */
+    obfusicate(word) {
+        return word.replace(/[a-z-]/g, "-").toLowerCase();
+    }
+    /* INIT / RESET FUNCTION */
     initWord() {
         const pickedWord = ks1_1.default[Math.floor(Math.random() * ks1_1.default.length)];
         return { "raw_word": pickedWord, "guess_word": this.obfusicate(pickedWord) };
-    }
-    obfusicate(word) {
-        return word.replace(/[a-z-]/g, "-").toLowerCase();
     }
     buildAlphabet() {
         for (const char of a) {
