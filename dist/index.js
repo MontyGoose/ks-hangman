@@ -33,8 +33,9 @@ class Hangman {
             throw err;
         }
         this.updateLetters(letter); // update letters with guess
-        this.updateWord(letter); // update word interface with guess
-        this.updateStatus(letter);
+        this.updateWord(); // update word interface uses letters array (so ensure it's updated first)
+        const goodGuess = this.updateStatus(letter);
+        return goodGuess;
     }
     getStatus() {
         return this.status;
@@ -74,7 +75,7 @@ class Hangman {
         }
         return true;
     }
-    updateWord(letter) {
+    updateWord() {
         let guess_word = this.word.raw_word;
         _.each(_.filter(this.letters, { "guessed": true }), function (item) {
             guess_word = guess_word.replace(new RegExp(item.letter + "|.", "gi"), c => {
@@ -87,7 +88,7 @@ class Hangman {
     obfusicate(word) {
         return word.replace(/[a-z-]/g, "-").toLowerCase();
     }
-    /* INIT / RESET FUNCTION */
+    /* INIT / RESET FUNCTIONs */
     initWord() {
         const pickedWord = ks1_1.default[Math.floor(Math.random() * ks1_1.default.length)];
         return { "raw_word": pickedWord, "guess_word": this.obfusicate(pickedWord) };
