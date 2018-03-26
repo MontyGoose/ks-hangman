@@ -1,4 +1,4 @@
-import { Hangman } from "../dist/index"
+import { Hangman } from "../dist/hangman"
 
 let hangman = new Hangman();
 

@@ -1,1 +1,1 @@
-{"version":3,"file":"ks1.js","sourceRoot":"","sources":["../../src/words/ks1.ts"],"names":[],"mappings":";;AAAA,MAAM,GAAG,GAAG;IACV,OAAO;IACP,SAAS;CACV,CAAC;AACF,kBAAe,GAAG,CAAC"}
+{"version":3,"file":"ks1.js","sourceRoot":"","sources":["../../src/words/ks1.ts"],"names":[],"mappings":";;AAAA,MAAM,GAAG,GAAG;IACV,OAAO;IACP,WAAW;IACX,SAAS;IACT,UAAU;IACV,SAAS;CACV,CAAC;AACF,kBAAe,GAAG,CAAC"}

@@ -1,5 +1,8 @@
 const ks1 = [
   "hello",
-  "another"
+  "chocolate",
+  "animals",
+  "freckles",
+  "booklet"
 ];
 export default ks1;

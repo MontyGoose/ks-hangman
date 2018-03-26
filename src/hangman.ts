@@ -1,3 +1,4 @@
+
 import * as _ from "lodash";
 
 import ks1Words from "./words/ks1";
@@ -37,7 +38,7 @@ export class Hangman {
     this.word = this.initWord();
   }
 
-  guess(letter: string) { // should turn boolean if the guess was in word or not
+  guess(letter: string): boolean { // should turn boolean if the guess was in word or not
     try {
       this.check(letter);  // are we OK to proceed will throw error if not
     } catch (err) {
@@ -49,15 +50,15 @@ export class Hangman {
     return goodGuess;
   }
 
-  getStatus() {
+  getStatus(): IStatus {
     return this.status;
   }
 
-  getWord() {
+  getWord(): IWord {
     return this.word;
   }
 
-  getLetters() {
+  getLetters(): ILetter[] {
     return this.letters;
   }
 
@@ -85,7 +86,7 @@ export class Hangman {
     _.find(this.letters, { "letter": letter }).guessed = true;
   }
 
-  private updateStatus(letter: string) { // update status
+  private updateStatus(letter: string): boolean { // update status
     if (!this.word.raw_word.includes(letter)) {
       this.status.lives--; // only loose a life if letter NOT found
       return false;
@@ -104,12 +105,12 @@ export class Hangman {
   }
 
   /* HELPER FUNCTIONS */
-  private obfusicate(word) {
+  private obfusicate(word: string): string {
     return word.replace(/[a-z-]/g, "-").toLowerCase();
   }
 
   /* INIT / RESET FUNCTIONs */
-  private initWord() {
+  private initWord(): IWord {
     const pickedWord = ks1Words[Math.floor(Math.random() * ks1Words.length)];
     return { "raw_word": pickedWord, "guess_word": this.obfusicate(pickedWord) };
   }
