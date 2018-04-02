@@ -34,6 +34,7 @@ function startGame() {
     //
 }
 startGame();
+/* ------------------------------------------------------- */
 function getUserDetails() {
     const questions = [
         {
