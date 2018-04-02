@@ -17758,11 +17758,12 @@ exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader
 
 
 // module
-exports.push([module.i, "._3sFUks6AiCYiGDcM55aCOF {\n  margin: 15px auto;\n  padding: 0;\n  max-width: 900px;\n}\n._3sFUks6AiCYiGDcM55aCOF:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n\n._3sFUks6AiCYiGDcM55aCOF li {\n  float: left;\n  margin: 0 10px 10px 0;\n  list-style: none;\n  width: 35px;\n  height: 30px;\n  padding-top: 10px;\n  background: #fff;\n  color: #c1d72e;\n  cursor: pointer;\n  -moz-border-radius: 5px;\n  -webkit-border-radius: 5px;\n  border-radius: 5px;\n  -khtml-border-radius: 5px;\n  border: solid 1px #fff;\n}\n._3sFUks6AiCYiGDcM55aCOF li:hover {\n  background: #c1d72e;\n  border: solid 1px #fff;\n  color: #fff;\n}\n", ""]);
+exports.push([module.i, "._3sFUks6AiCYiGDcM55aCOF {\n  margin: 15px auto;\n  padding: 0;\n  max-width: 900px;\n}\n._3sFUks6AiCYiGDcM55aCOF:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n\n._3sFUks6AiCYiGDcM55aCOF li {\n  float: left;\n  margin: 0 10px 10px 0;\n  list-style: none;\n  width: 35px;\n  height: 30px;\n  padding-top: 10px;\n  background: #fff;\n  color: #c1d72e;\n  cursor: pointer;\n  -moz-border-radius: 5px;\n  -webkit-border-radius: 5px;\n  border-radius: 5px;\n  -khtml-border-radius: 5px;\n  border: solid 1px #fff;\n}\n._3sFUks6AiCYiGDcM55aCOF li:hover {\n  background: #c1d72e;\n  border: solid 1px #fff;\n  color: #fff;\n}\n\n\n._3sFUks6AiCYiGDcM55aCOF li._3UjcCYWk3jSMffbLHKYRDo {\n  opacity: 0.4;\n  filter: alpha(opacity=40);\n  -moz-transition: all 1s ease-in;\n  -moz-transition: all 0.3s ease-in-out;\n  -webkit-transition: all 0.3s ease-in-out;\n  cursor: default;\n}\n\n._3sFUks6AiCYiGDcM55aCOF li._3UjcCYWk3jSMffbLHKYRDo:hover {\n  -moz-transition: all 1s ease-in;\n  -moz-transition: all 0.3s ease-in-out;\n  -webkit-transition: all 0.3s ease-in-out;\n  opacity: 0.4;\n  filter: alpha(opacity=40);\n  -moz-transition: all 1s ease-in;\n  -moz-transition: all 0.3s ease-in-out;\n  -webkit-transition: all 0.3s ease-in-out;\n}\n", ""]);
 
 // exports
 exports.locals = {
-	"alphabet": "_3sFUks6AiCYiGDcM55aCOF"
+	"alphabet": "_3sFUks6AiCYiGDcM55aCOF",
+	"guessed": "_3UjcCYWk3jSMffbLHKYRDo"
 };
 
 /***/ }),
@@ -17895,18 +17896,6 @@ const React = __importStar(__webpack_require__(/*! react */ "react"));
 const ReactDOM = __importStar(__webpack_require__(/*! react-dom */ "react-dom"));
 const HangmanGame_1 = __webpack_require__(/*! ./components/HangmanGame */ "./src/components/HangmanGame.tsx");
 ReactDOM.render(React.createElement(HangmanGame_1.HangmanGame, { word: "hello" }), document.getElementById("root"));
-// ReactDOM.render(
-//     <Hello who="Isabel" />,
-//     document.getElementById("example")
-// );
-// ReactDOM.render(
-//   <Letters letters={hangman.getLetters()} />,
-//   document.getElementById("buttons")
-// );
-// ReactDOM.render(
-//   <Word word={hangman.getWord().guess_word} />,
-//   document.getElementById("word")
-// );
 
 
 /***/ }),
@@ -17933,14 +17922,27 @@ const hangman_1 = __webpack_require__(/*! ../hangman */ "./src/hangman.ts");
 const Hello_1 = __webpack_require__(/*! ./Hello */ "./src/components/Hello.tsx");
 const Letters_1 = __webpack_require__(/*! ./Letters */ "./src/components/Letters.tsx");
 const Word_1 = __webpack_require__(/*! ./Word */ "./src/components/Word.tsx");
+const Status_1 = __webpack_require__(/*! ./Status */ "./src/components/Status.tsx");
 const styles = __webpack_require__(/*! ../css/main.css */ "./src/css/main.css");
 const hangman = new hangman_1.Hangman();
 class HangmanGame extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { lives: hangman.getStatus().lives };
+        this.handleGuess = this.handleGuess.bind(this);
+    }
+    handleGuess(guess) {
+        hangman.guess(guess);
+        this.setState({
+            lives: hangman.getStatus().lives
+        });
+    }
     render() {
         return React.createElement("div", { className: "wrapper" },
             React.createElement(Hello_1.Hello, { who: "Isabel" }),
-            React.createElement(Letters_1.Letters, { letters: hangman.getLetters() }),
-            React.createElement(Word_1.Word, { word: hangman.getWord().guess_word }));
+            React.createElement(Letters_1.Letters, { letters: hangman.getLetters(), onGuess: this.handleGuess }),
+            React.createElement(Word_1.Word, { word: hangman.getWord().guess_word }),
+            React.createElement(Status_1.Status, { status: hangman.getStatus(), word: hangman.getWord().raw_word }));
     }
 }
 exports.HangmanGame = HangmanGame;
@@ -18003,8 +18005,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(__webpack_require__(/*! react */ "react"));
 const styles = __webpack_require__(/*! ../css/letters.css */ "./src/css/letters.css");
 class Letters extends React.Component {
+    constructor(props) {
+        super(props);
+        //this.onGuess = this.handleChange.bind(this)
+    }
     LetterList() {
-        const letters = this.props.letters.map((letter) => React.createElement("li", { key: letter.letter }, letter.letter));
+        const letters = this.props.letters.map((letter) => React.createElement("li", { className: letter.guessed ? styles.guessed : '', key: letter.letter, onClick: () => this.props.onGuess(letter.letter) }, letter.letter));
         return letters;
     }
     render() {
@@ -18012,6 +18018,48 @@ class Letters extends React.Component {
     }
 }
 exports.Letters = Letters;
+
+
+/***/ }),
+
+/***/ "./src/components/Status.tsx":
+/*!***********************************!*\
+  !*** ./src/components/Status.tsx ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+const React = __importStar(__webpack_require__(/*! react */ "react"));
+// 'HelloProps' describes the shape of props.
+// State is never set so we use the '{}' type.
+class Status extends React.Component {
+    livesLeft() {
+        return React.createElement("h2", null,
+            "Lives : ",
+            this.props.status.lives);
+    }
+    gameOver() {
+        return React.createElement("div", null,
+            React.createElement("h2", null, "GAME OVER"),
+            React.createElement("h3", null,
+                "The word was : ",
+                this.props.word));
+    }
+    render() {
+        return React.createElement("div", { className: "wrapper" }, this.props.status.lives > 0 ? (this.livesLeft()) : (this.gameOver()));
+    }
+}
+exports.Status = Status;
 
 
 /***/ }),

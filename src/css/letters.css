@@ -30,3 +30,24 @@
   border: solid 1px #fff;
   color: #fff;
 }
+
+
+.alphabet li.guessed {
+  opacity: 0.4;
+  filter: alpha(opacity=40);
+  -moz-transition: all 1s ease-in;
+  -moz-transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  cursor: default;
+}
+
+.alphabet li.guessed:hover {
+  -moz-transition: all 1s ease-in;
+  -moz-transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  opacity: 0.4;
+  filter: alpha(opacity=40);
+  -moz-transition: all 1s ease-in;
+  -moz-transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+}

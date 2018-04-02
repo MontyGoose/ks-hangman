@@ -8,13 +8,16 @@ interface ILetter {
   inWord: boolean;
 }
 
-export interface LettersProps {letters: ILetter[]}
+export interface LettersProps {letters: ILetter[], onGuess: any}
 
 export class Letters extends React.Component<LettersProps, {}> {
-
+  constructor(props) {
+     super(props)
+     //this.onGuess = this.handleChange.bind(this)
+   }
     LetterList() {
       const letters = this.props.letters.map((letter) =>
-        <li key={letter.letter}>{letter.letter}</li>
+        <li className={letter.guessed ? styles.guessed : ''} key={letter.letter} onClick={() => this.props.onGuess(letter.letter)}>{letter.letter}</li>
       );
       return letters;
     }
