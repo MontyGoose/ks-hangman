@@ -3,7 +3,7 @@ import * as _ from "lodash";
 
 import ks1Words from "./words/ks1";
 
-interface ILetter {
+export interface ILetter {
   letter: string;
   guessed: boolean;
   inWord: boolean;

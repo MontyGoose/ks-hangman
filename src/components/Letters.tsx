@@ -1,18 +1,19 @@
 import * as React from "react";
-import { Hangman } from "../hangman";
 
 const styles = require("../css/letters.css");
 
-const hangman = new Hangman();
+interface ILetter {
+  letter: string;
+  guessed: boolean;
+  inWord: boolean;
+}
 
-export interface LettersProps { }
+export interface LettersProps {letters: ILetter[]}
 
-// 'HelloProps' describes the shape of props.
-// State is never set so we use the '{}' type.
 export class Letters extends React.Component<LettersProps, {}> {
 
     LetterList() {
-      const letters = hangman.getLetters().map((letter) =>
+      const letters = this.props.letters.map((letter) =>
         <li key={letter.letter}>{letter.letter}</li>
       );
       return letters;

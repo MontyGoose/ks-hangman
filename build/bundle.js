@@ -17788,6 +17788,28 @@ exports.locals = {
 
 /***/ }),
 
+/***/ "./node_modules/typings-for-css-modules-loader/lib/index.js??ref--5-1!./src/css/word.css":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/typings-for-css-modules-loader/lib??ref--5-1!./src/css/word.css ***!
+  \**************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "#o_xUeYLGO12xeZyp9KWmJ {\n  margin: 0;\n  display: block;\n  padding: 0;\n  display: block;\n}\n\n.iPvnOpWspJQlMRIxH6G1H {\n  position: relative;\n  list-style: none;\n  margin: 0;\n  display: inline-block;\n  padding: 0 10px;\n  font-size: 1.6em;\n}\n", ""]);
+
+// exports
+exports.locals = {
+	"word": "o_xUeYLGO12xeZyp9KWmJ",
+	"guess_word": "iPvnOpWspJQlMRIxH6G1H"
+};
+
+/***/ }),
+
 /***/ "./node_modules/webpack/buildin/global.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -17871,11 +17893,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(__webpack_require__(/*! react */ "react"));
 const ReactDOM = __importStar(__webpack_require__(/*! react-dom */ "react-dom"));
+const hangman_1 = __webpack_require__(/*! ./hangman */ "./src/hangman.ts");
 const Hello_1 = __webpack_require__(/*! ./components/Hello */ "./src/components/Hello.tsx");
 const Letters_1 = __webpack_require__(/*! ./components/Letters */ "./src/components/Letters.tsx");
+const Word_1 = __webpack_require__(/*! ./components/Word */ "./src/components/Word.tsx");
 const styles = __webpack_require__(/*! ./css/main.css */ "./src/css/main.css");
+const hangman = new hangman_1.Hangman();
 ReactDOM.render(React.createElement(Hello_1.Hello, { who: "Isabel" }), document.getElementById("example"));
-ReactDOM.render(React.createElement(Letters_1.Letters, null), document.getElementById("buttons"));
+ReactDOM.render(React.createElement(Letters_1.Letters, { letters: hangman.getLetters() }), document.getElementById("buttons"));
+ReactDOM.render(React.createElement(Word_1.Word, { word: hangman.getWord().guess_word }), document.getElementById("word"));
 
 
 /***/ }),
@@ -17933,14 +17959,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(__webpack_require__(/*! react */ "react"));
-const hangman_1 = __webpack_require__(/*! ../hangman */ "./src/hangman.ts");
 const styles = __webpack_require__(/*! ../css/letters.css */ "./src/css/letters.css");
-const hangman = new hangman_1.Hangman();
-// 'HelloProps' describes the shape of props.
-// State is never set so we use the '{}' type.
 class Letters extends React.Component {
     LetterList() {
-        const letters = hangman.getLetters().map((letter) => React.createElement("li", { key: letter.letter }, letter.letter));
+        const letters = this.props.letters.map((letter) => React.createElement("li", { key: letter.letter }, letter.letter));
         return letters;
     }
     render() {
@@ -17948,6 +17970,35 @@ class Letters extends React.Component {
     }
 }
 exports.Letters = Letters;
+
+
+/***/ }),
+
+/***/ "./src/components/Word.tsx":
+/*!*********************************!*\
+  !*** ./src/components/Word.tsx ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+const React = __importStar(__webpack_require__(/*! react */ "react"));
+const styles = __webpack_require__(/*! ../css/word.css */ "./src/css/word.css");
+class Word extends React.Component {
+    render() {
+        return React.createElement("span", { className: styles.guess_word }, this.props.word);
+    }
+}
+exports.Word = Word;
 
 
 /***/ }),
@@ -17991,6 +18042,36 @@ if(false) {}
 
 
 var content = __webpack_require__(/*! !../../node_modules/typings-for-css-modules-loader/lib??ref--5-1!./main.css */ "./node_modules/typings-for-css-modules-loader/lib/index.js??ref--5-1!./src/css/main.css");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
+/***/ "./src/css/word.css":
+/*!**************************!*\
+  !*** ./src/css/word.css ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../node_modules/typings-for-css-modules-loader/lib??ref--5-1!./word.css */ "./node_modules/typings-for-css-modules-loader/lib/index.js??ref--5-1!./src/css/word.css");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
